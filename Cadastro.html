@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+		<title>AGENDACON - Cadastro</title>
+		
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
+		
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		
+		<script language="javascript">
+			// Jquery Mascaras
+			// Executa Mascara somente se for IE
+			if(/*@cc_on!@*/false || !!document.documentMode){
+				$(document).ready(function () {
+					var data = $("#txtDataNascimento");
+					var telefone = $("");
+
+					data.mask('00/00/0000');
+					telefone.mask('0000-0000');
+				});
+			}
+
+			// Somente Números
+			function apenasNumeros(num) {
+				var er = /[^0-9.]/; // REGEX para pegar apenas numeros
+				er.lastIndex = 0;
+				var campo = num;
+				
+				if (er.test(campo.value)) {
+					campo.value = "";
+				}
+			}
+			
+			// Valida Formulário
+			function ValidaForm(){
+
+				// Recupera valores do Form
+				var arrForm = {
+					"Nome": document.forms["cadUser"]["txtNome"].value, 
+					"Data Nascimento": document.forms["cadUser"]["txtDataNascimento"].value,
+					"Sexo": document.forms["cadUser"]["sexo"].value,
+					"E-mail": document.forms["cadUser"]["txtEmail"].value,
+					"Confirme E-mail": document.forms["cadUser"]["txtConfEmail"].value,
+					"Estado Civil": document.forms["cadUser"]["estCivil"].value,
+					"Endereço": document.forms["cadUser"]["txtEndereco"].value,
+					"Número": document.forms["cadUser"]["txtNumero"].value,
+					"Cidade": document.forms["cadUser"]["txtCidade"].value,
+					"Estado": document.forms["cadUser"]["estado"].value,
+					"Tel.Residencial": document.forms["cadUser"]["txtTelefoneRes"].value,
+					"Celular": document.forms["cadUser"]["txtCelular"].value,
+					"Mensagem": document.forms["cadUser"]["txtMensagem"].value,
+					"Senha": document.forms["cadUser"]["senha"].value,
+					"Confirme Senha": document.forms["cadUser"]["confSenha"].value
+				};
+				
+				// Valida cada Campo
+				ValidaCampo(arrForm);
+			}
+
+			// Faz a validação campo por campo
+			function  ValidaCampo(array){
+				var erro = "";
+
+				// Percorre array para validação
+				for(var key in array){
+					if (array[key] == null || array[key] == undefined || array[key] == "") {
+						erro += "<p>Preencha o campo " + key +"</p>\n";
+					}
+					
+					// Ternário para validar e-mail e senha
+					erro += key == "Confirme E-mail" ? array["E-mail"] == array["Confirme E-mail"] ?  "" : "<p>Emails não estão iguais</p>\n" : ""; 
+					erro += key == "Confirme Senha" ? array["Senha"] == array["Confirme Senha"] ?  "" : "<p>Senhas não estão iguais</p>\n" : ""; 
+				}
+
+				if(erro != null && erro.length > 0 || erro != undefined && erro.length > 0){
+					document.getElementById("cadERRO").innerHTML = erro;
+					$("#modalErro").modal("show");
+				}
+				else{
+					ModalSucesso();
+				}
+			}
+
+			// Exibe Modal de Sucesso com os dados preenchidos
+			function ModalSucesso(){
+				var alertString = "";
+
+				alertString += "\n<p>Nome: " + document.forms["cadUser"]["txtNome"].value + "</p>";
+				alertString += "\n<p>Data de Nascimento: " + document.forms["cadUser"]["txtDataNascimento"].value + "</p>";
+				alertString += "\n<p>Sexo: " + document.forms["cadUser"]["sexo"].value + "</p>";
+				alertString += "\n<p>Email: " + document.forms["cadUser"]["txtEmail"].value + "</p>";
+				alertString += "\n<p>Confirma Email: " + document.forms["cadUser"]["txtConfEmail"].value + "</p>";
+				alertString += "\n<p>Estado civil: " + document.forms["cadUser"]["estCivil"].value + "</p>";
+				alertString += "\n<p>Endereço: " + document.forms["cadUser"]["txtEndereco"].value + "</p>";
+				alertString += "\n<p>Número: " + document.forms["cadUser"]["txtNumero"].value + "</p>";
+				alertString += "\n<p>Complemento: " + document.forms["cadUser"]["txtComplemento"].value + "</p>";
+				alertString += "\n<p>Cidade: " + document.forms["cadUser"]["txtCidade"].value + "</p>";
+				alertString += "\n<p>Estado: " + document.forms["cadUser"]["estado"].value + "</p>";
+				alertString += "\n<p>Tel. Residencial: " + document.forms["cadUser"]["txtTelefoneRes"].value + "</p>";
+				alertString += "\n<p>Celular: " + document.forms["cadUser"]["txtCelular"].value + "</p>";
+				alertString += "\n<p>Mensagem: " + document.forms["cadUser"]["txtMensagem"].value + "</p>";
+				alertString += "\n<p>Senha " + document.forms["cadUser"]["senha"].value + "</p>";
+				alertString += "\n<p>Repetir Senha: " + document.forms["cadUser"]["confSenha"].value + "</p>";
+				
+				document.getElementById("cadSucesso").innerHTML = alertString;
+				$("#modalForm").modal("show");
+			};
+
+			function LimparCampos(){
+				
+				// 'Reset' radio
+				$('input[name=sexo]').attr('checked',true);
+				$('input[name=sexo]').attr('checked',false);
+				
+				// Reseta Select
+				var select = document.getElementsByTagName('select');
+				
+				for(var i=0; i<select.length; i++){
+					select[i].selectedIndex = 0;
+				}
+
+				// Reset input e demais
+				document.getElementById("txtNome").value = "";
+				document.getElementById("txtDataNascimento").value = "";
+				document.getElementById("txtEmail").value = "";
+				document.getElementById("txtConfEmail").value = "";
+				document.getElementById("txtEndereco").value = "";
+				document.getElementById("txtNumero").value = "";
+				document.getElementById("txtComplemento").value = "";
+				document.getElementById("txtCidade").value = "";
+				document.getElementById("txtTelefoneRes").value = "";
+				document.getElementById("txtCelular").value = "";
+				document.getElementById("txtMensagem").value = "";
+				document.getElementById("senha").value = "";
+				document.getElementById("confSenha").value = "";
+
+				// Ao fechar Modal Redireciona para Home
+				window.location.href = "index.html";
+			}
+		</script>
+		
+		<style type="text/css">
+			table {
+			  border-collapse: separate;
+			  border-spacing: 0 8px;
+			  margin-top: -8px;
+			}
+
+			td {
+			  /* border: 1px solid green; */
+			  border-left-width: 0;
+			  min-width: 120px;
+			  height: 18px;
+			}
+
+			tr.bordered {
+				border-bottom: 56px solid black;
+			}
+		</style>
+    </head>
+    <body style="background-color: aliceblue;">
+        <!-- NAV -->
+        <div class="container-fluid" style="background-color: #e3f2fd;">
+            <nav class="navbar navbar-expand-lg navbar-light">
+				<a class="navbar-brand" href="index.html">AGENDACON</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul></ul>
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active">
+							<a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="Institucional.html">Institucional</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<!-- NAV -->
+		
+		<br>
+		
+		<div class="container-fluid"  style="background-color: white;">
+			<form id="cadUser" name="cadUser" class="form-inline">
+				<fieldset class="border p-2">
+					<legend  class="w-auto">Cadastro</legend>
+					<table class="form-group" cellspacing="2" cellpadding="2">
+						<tr>
+							<td><label for="txtNome">Nome</label></td>
+							<td colspan="1"><input type="text" name="txtNome" id="txtNome" class="form-control" style="width: 400px;"></td>
+							
+							<td><label for="txtDataNascimento">Data Nascimento</label></td>
+							<td><input type="date" name="txtDataNascimento" id="txtDataNascimento" class="form-control"></td>
+							
+							<td><label for="sexo">Sexo</label></td>
+							<td>
+								<input type="radio" id="M" name="sexo" value="Masculino" class="form-control">Masculino
+								<input type="radio" id="F" name="sexo" value="Feminino" class="form-control">Feminino
+							</td>
+						</tr>
+						<tr>
+							<td><label for="txtEmail">E-mail</label></td>
+							<td><input type="text" name="txtEmail" id="txtEmail" class="form-control" style="width: 400px;"></td>
+							
+							<td><label for="estCivil">Estado Civil</label></td>
+							<td>
+								<select name="estCivil" id="estCivil" class="form-control">
+									<option id="0" value="0">Selecione</option>
+									<option id="Sol" value="Solteiro">Solteiro(a)</option>
+									<option id="Cas" value="Casado">Casado (a)</option>
+									<option id="Div" value="Divorciado">Divorciado (a)</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="txtConfEmail">Confirme E-mail</label></td>
+							<td><input type="text" name="txtConfEmail" id="txtConfEmail" class="form-control" style="width: 400px;"></td>
+						</tr>
+						<tr class="bordered"></tr>
+						<tr>
+							<td><label for="txtEndereco">Endereço</label></td>
+							<td><input type="text" name="txtEndereco" id="txtEndereco" class="form-control" style="width: 400px;"></td>
+
+							<td><label for="txtNumero">Número</label></td>
+							<td><input type="number" name="txtNumero" id="txtNumero" class="form-control" style="width: 95px;"></td>
+						</tr>
+						<tr>
+							<td><label for="txtComplemento">Complemento</label></td>
+							<td><input type="text" name="txtComplemento" id="txtComplemento" class="form-control" style="width: 150px;"></td>
+							
+							<td><label for="txtCidade">Cidade</label></td>
+							<td><input type="text" name="txtCidade" id="txtCidade" class="form-control" style="width: 150px;"></td>
+							
+							<td><label for="txtEstado">Estado</label></td>
+							<td>
+								<select id="estado" name="estado" class="custom-select mr-sm-2 ">
+									<option value="0">Selecione..</option>
+									<option value="AC">Acre</option>
+									<option value="AL">Alagoas</option>
+									<option value="AP">Amapá</option>
+									<option value="AM">Amazonas</option>
+									<option value="BA">Bahia</option>
+									<option value="CE">Ceará</option>
+									<option value="DF">Distrito Federal</option>
+									<option value="ES">Espírito Santo</option>
+									<option value="GO">Goiás</option>
+									<option value="MA">Maranhão</option>
+									<option value="MT">Mato Grosso</option>
+									<option value="MS">Mato Grosso do Sul</option>
+									<option value="MG">Minas Gerais</option>
+									<option value="PA">Pará</option>
+									<option value="PB">Paraíba</option>
+									<option value="PR">Paraná</option>
+									<option value="PE">Pernambuco</option>
+									<option value="PI">Piauí</option>
+									<option value="RJ">Rio de Janeiro</option>
+									<option value="RN">Rio Grande do Norte</option>
+									<option value="RS">Rio Grande do Sul</option>
+									<option value="RO">Rondônia</option>
+									<option value="RR">Roraima</option>
+									<option value="SC">Santa Catarina</option>
+									<option value="SP">São Paulo</option>
+									<option value="SE">Sergipe</option>
+									<option value="TO">Tocantins</option>
+									<option value="ET">Estrangeiro</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="txtTelefoneRes">Tel. Residencial</label></td>
+							<td><input type="text" name="txtTelefoneRes" id="txtTelefoneRes" class="form-control" onkeyup="apenasNumeros(this);"></td>
+
+							<td><label for="txtCelular">Celular</label></td>
+							<td><input type="text" name="txtCelular" id="txtCelular" class="form-control" onkeyup="apenasNumeros(this);"></td>
+						<tr>
+							<td><label for="txtMensagem">Mensagem</label></td>
+							<td colspan="3"><textarea rows="4" cols="50" name="txtMensagem" id="txtMensagem" form="cadUser" class="form-control" style="width: 95%;"></textarea></td>
+						</tr>
+						<tr>
+							<td><label for="senha">Senha</label></td>
+							<td><input type="password" name="senha" id="senha" class="form-control"></td>
+							
+							<td><label for="confSenha">Confirme Senha</label></td>
+							<td><input type="password" name="confSenha" id="confSenha" class="form-control"></td>&nbsp;
+						</tr>
+					</table>
+					<div class="text-right">
+						<input type="button" name="btnEnviar" id="btnEnviar" class="btn btn-lg btn-primary" value="Enviar" onclick="ValidaForm()">
+					</div>
+					
+				</fieldset>
+			</form>
+		</div>
+		
+		<br />
+		
+		<!-- Exibe o resultado do Cadastro efetuado com Sucesso -->
+		<div id="modalForm" class="modal fade bd-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document"> <!-- modal-dialog-centered -->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel" style="color:green;">Cadastro efetuado com Sucesso</h5>
+						<button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close" onclick="LimparCampos()">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<span id="cadSucesso" class="form-group"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="btnClose" class="btn btn-secondary" data-dismiss="modal" onclick="LimparCampos()">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Exibe o ERROS no Cadastro -->
+		<div id="modalErro" class="modal fade bd-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document"> <!-- modal-dialog-centered -->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel" style="color: red;">ERRO - Preencha os campos abaixo</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<span id="cadERRO" class="form-group"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<br />
+		
+		<div class="card-footer text-muted">
+			<p>&copy; 2020 AGENDACON<p>
+	    </div>
+    </body>
+</html>
